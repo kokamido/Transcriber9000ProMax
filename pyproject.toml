@@ -1,7 +1,7 @@
 [project]
-name = "app"
+name = "Transcriber9000ProMax"
 version = "0.1.0"
-description = "Add your description here"
+description = "Hehehe"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
