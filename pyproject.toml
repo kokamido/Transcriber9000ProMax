@@ -1,0 +1,21 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gigaam[torch]",
+    "kenlm",
+    "tone[demo]",
+]
+
+[tool.uv]
+override-dependencies = [
+    "numpy>=2.0.0",
+]
+
+[tool.uv.sources]
+tone = { git = "https://github.com/voicekit-team/T-one.git", rev = "3c5b6c015038173840e62cea99e10cdb1c759116" }
+kenlm = { git = "https://github.com/kpu/kenlm.git", rev = "4cb443e60b7bf2c0ddf3c745378f76cb59e254e5" }
+gigaam = { git = "https://github.com/salute-developers/GigaAM.git", rev = "6e4b027c6fb554e09e8b9059b757a175295ab879" }
