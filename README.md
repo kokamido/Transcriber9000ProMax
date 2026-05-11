@@ -1,1 +1,1 @@
-Hehehe
+![alt text](data/madskillz.png)
