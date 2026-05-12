@@ -20,3 +20,17 @@ override-dependencies = [
 tone = { git = "https://github.com/voicekit-team/T-one.git", rev = "3c5b6c015038173840e62cea99e10cdb1c759116" }
 kenlm = { git = "https://github.com/kpu/kenlm.git", rev = "4cb443e60b7bf2c0ddf3c745378f76cb59e254e5" }
 gigaam = { git = "https://github.com/salute-developers/GigaAM.git", rev = "6e4b027c6fb554e09e8b9059b757a175295ab879" }
+
+[tool.basedpyright]
+ignore = [
+    "test.py"
+]
+typeCheckingMode = "recommended"
+reportWarning = "error"
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.39.4",
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.12",
+]
