@@ -1,4 +1,5 @@
 from enum import StrEnum
+from pathlib import Path
 from pydantic import (
     BaseModel,
     FilePath,
@@ -10,14 +11,15 @@ from pydantic import (
 
 
 class TranscriberModel(StrEnum):
-    GIGAAM_V3_CTC_E2E = "GIGAAM_V3_E2E_CTC"
-    GIGAAM_V3_RNNT_E2E = "GIGAAM_V3_E2E_RNNT"
+    GIGAAM_V3_E2E_CTC = "GIGAAM_V3_E2E_CTC"
+    GIGAAM_V3_E2E_RNNT = "GIGAAM_V3_E2E_RNNT"
     GIGAAM_V3_CTC = "GIGAAM_V3_CTC"
     GIGAAM_V3_RNNT = "GIGAAM_V3_RNNT"
+    TONE_CTC = "TONE_CTC"
 
 
 class Preprocessor(StrEnum):
-    VAD = "VAD"
+    SPLIT_BY_VAD = "SPLIT_BY_VAD"
 
 
 class TranscriberConfig(BaseModel):
@@ -42,7 +44,7 @@ class TimeInterval(BaseModel):
 
 
 class TranscribedPhrase(TimeInterval):
-    source_audio_path: FilePath
+    source_audio_path: Path
     text: str
 
 
