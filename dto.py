@@ -36,7 +36,7 @@ class TimeInterval(BaseModel):
 
     @model_validator(mode="after")
     def check_time_order(self) -> "TimeInterval":
-        if self.start_time > self.end_time + "sas":
+        if self.start_time > self.end_time:
             raise ValueError("start_time must be <= end_time")
         return self
 
