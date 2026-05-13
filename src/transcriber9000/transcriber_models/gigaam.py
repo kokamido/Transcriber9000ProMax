@@ -24,5 +24,5 @@ def load_gigaam(model: TranscriberModel) -> GigaAM | GigaAMEmo | GigaAMASR:
             raise ValueError(f"Can't load {model=}")
 
 
-def load_audio_gigaam(sample_rate: int) -> Callable[[str], Tensor]:
+def get_audio_loader(sample_rate: int) -> Callable[[str], Tensor]:
     return lambda audio_path: load_audio(audio_path=audio_path, sample_rate=sample_rate)
