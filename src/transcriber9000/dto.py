@@ -1,11 +1,12 @@
 from enum import StrEnum
 from pathlib import Path
+
 from pydantic import (
     BaseModel,
     FilePath,
     NonNegativeFloat,
-    StrictStr,
     PositiveInt,
+    StrictStr,
     model_validator,
 )
 

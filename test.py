@@ -1,7 +1,6 @@
-import numpy as np
 import gigaam
+import numpy as np
 from tone import StreamingCTCPipeline, read_audio
-
 
 model_name = "v3_e2e_rnnt"
 model = gigaam.load_model(model_name)

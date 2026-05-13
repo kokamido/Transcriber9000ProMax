@@ -1,10 +1,17 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Callable
 
-from gigaam import load_audio, load_model, GigaAM, GigaAMASR, GigaAMEmo  # pyright: ignore[reportMissingTypeStubs]
+from collections.abc import Callable
+from typing import TYPE_CHECKING
+
+from gigaam import (  # pyright: ignore[reportMissingTypeStubs]
+    GigaAM,
+    GigaAMASR,
+    GigaAMEmo,
+    load_audio,
+    load_model,
+)
 
 from transcriber9000.dto import TranscriberModel
-
 
 if TYPE_CHECKING:
     from torch import Tensor

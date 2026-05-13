@@ -1,14 +1,17 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Callable
+
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from tone import StreamingCTCPipeline, read_audio
 
 from transcriber9000.dto import TranscriberModel
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     import numpy as np
     import numpy.typing as npt
-    from pathlib import Path
 
 
 def load_tone(model: TranscriberModel) -> StreamingCTCPipeline:

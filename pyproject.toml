@@ -27,6 +27,9 @@ ignore = [
 ]
 typeCheckingMode = "recommended"
 
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
 [dependency-groups]
 dev = [
     "basedpyright>=1.39.4",
