@@ -40,14 +40,14 @@ class Gigaam(ASRPipeline):
 
     @override
     def transcribe(self, input: AudioInput, model: TranscriberModel, emit_timestamps: bool) -> TranscribedText | None:
-        if input.sample_rate != 16000:
-            self._logger.warning(
-                f"Sample rate {input.sample_rate} does not supported by Gigaam. Audio will be resampled to 16kHz"
-            )
-        if model not in self._model_cache:
-            self._model_cache[model] = self.__load_asr_model(model)
-        transcriber = self._model_cache[model]
         with self._logger.contextualize(model=model, **input.model_dump(mode="json")):
+            if input.sample_rate != 16000:
+                self._logger.warning(
+                    f"Sample rate {input.sample_rate} does not supported by Gigaam. Audio will be resampled to 16kHz"
+                )
+            if model not in self._model_cache:
+                self._model_cache[model] = self.__load_asr_model(model)
+            transcriber = self._model_cache[model]
             transcription_result = transcriber.transcribe(
                 wav_file=str(input.source_audio_path), word_timestamps=emit_timestamps
             )
