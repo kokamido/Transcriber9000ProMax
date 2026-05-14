@@ -12,7 +12,5 @@ class Tone(ASRPipeline):
         raise NotImplementedError
 
     @override
-    def transcribe_batch(
-        self, input: Iterable[AudioInput], model: TranscriberModel
-    ) -> list[TranscribedText]:
+    def transcribe_batch(self, input: Iterable[AudioInput], model: TranscriberModel) -> list[TranscribedText]:
         raise NotImplementedError

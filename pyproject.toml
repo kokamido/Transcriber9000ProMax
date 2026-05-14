@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "gigaam[torch]",
     "kenlm",
+    "loguru>=0.7.3",
     "pydantic>=2.13.4",
     "tone[demo]",
 ]
@@ -27,8 +28,12 @@ ignore = [
 ]
 typeCheckingMode = "recommended"
 
+[tool.ruff]
+line-length = 128
+
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
 
 [dependency-groups]
 dev = [
