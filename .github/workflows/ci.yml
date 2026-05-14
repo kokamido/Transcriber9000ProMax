@@ -1,6 +1,5 @@
 name: CI
 
-# Запускаем CI при пушах в main и на любые пулл-реквесты
 on:
   push:
     branches: [ "master" ]

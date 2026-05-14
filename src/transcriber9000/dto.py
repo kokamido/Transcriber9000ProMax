@@ -1,11 +1,12 @@
 from enum import StrEnum
 from pathlib import Path
+
 from pydantic import (
     BaseModel,
     FilePath,
     NonNegativeFloat,
-    StrictStr,
     PositiveInt,
+    StrictStr,
     model_validator,
 )
 
@@ -44,8 +45,12 @@ class TimeInterval(BaseModel):
 
 
 class TranscribedPhrase(TimeInterval):
-    source_audio_path: Path
     text: str
+
+
+class TranscribedText(BaseModel):
+    phrases: list[TranscribedPhrase]
+    source_path: Path
 
 
 class DrawableEvent(TimeInterval):
