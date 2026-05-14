@@ -1,5 +1,6 @@
 import logging
 import sys
+from typing import override
 
 from loguru import logger
 
@@ -8,7 +9,7 @@ def setup_logging(debug_mode: bool = False):
     logger.remove()
 
     console_level = "DEBUG" if debug_mode else "INFO"
-    logger.add(
+    _ = logger.add(
         sys.stderr,
         level=console_level,
         format="<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{extra}</cyan> - <level>{message}</level>",
@@ -16,7 +17,7 @@ def setup_logging(debug_mode: bool = False):
         colorize=True,
     )
 
-    logger.add(
+    _ = logger.add(
         "logs/transcriber_{time:YYYY-MM-DD}.log",
         level="DEBUG",
         format="{message}",
@@ -27,7 +28,8 @@ def setup_logging(debug_mode: bool = False):
     )
 
     class InterceptHandler(logging.Handler):
-        def emit(self, record):
+        @override
+        def emit(self, record: logging.LogRecord):
             try:
                 level = logger.level(record.levelname).name
             except ValueError:
@@ -35,6 +37,8 @@ def setup_logging(debug_mode: bool = False):
             frame, depth = logging.currentframe(), 2
             while frame.f_code.co_filename == logging.__file__:
                 frame = frame.f_back
+                if frame is None:
+                    break
                 depth += 1
             logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
