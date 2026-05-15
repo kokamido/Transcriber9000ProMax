@@ -34,12 +34,15 @@ class AudioInput(BaseModel):
 
 
 class TimeInterval(BaseModel):
-    start_time: NonNegativeFloat
-    end_time: NonNegativeFloat
+    start_time: NonNegativeFloat | None
+    end_time: NonNegativeFloat | None
 
     @model_validator(mode="after")
     def check_time_order(self) -> "TimeInterval":
-        if self.start_time > self.end_time:
+        if self.start_time is None or self.end_time is None:
+            if not (self.start_time is None and self.end_time is None):
+                raise ValueError("Both start_time and end_time should be None or float")
+        elif self.start_time > self.end_time:
             raise ValueError("start_time must be <= end_time")
         return self
 
@@ -51,6 +54,7 @@ class TranscribedPhrase(TimeInterval):
 class TranscribedText(BaseModel):
     phrases: list[TranscribedPhrase]
     source_path: Path
+    model: TranscriberModel
 
 
 class DrawableEvent(TimeInterval):
