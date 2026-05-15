@@ -1,22 +1,15 @@
-import gigaam
 import numpy as np
 from tone import StreamingCTCPipeline, read_audio
 
-model_name = "v3_e2e_rnnt"
-model = gigaam.load_model(model_name)
-print(model.transcribe("./data/test.mp3", word_timestamps=True).words)
+from transcriber9000.dto import AudioInput, TranscriberModel
+from transcriber9000.transcriber_models import gigaam
 
-model_name = "v3_e2e_ctc"
-model = gigaam.load_model(model_name)
-print(model.transcribe("./data/test.mp3", word_timestamps=True).words)
-
-model_name = "v3_rnnt"
-model = gigaam.load_model(model_name)
-print(model.transcribe("./data/test.mp3", word_timestamps=True).words)
-
-model_name = "v3_ctc"
-model = gigaam.load_model(model_name)
-print(model.transcribe("./data/test.mp3", word_timestamps=True).words)
+gigaam_transcriber = gigaam.Gigaam()
+input = AudioInput(sample_rate=16000, source_audio_path="./data/test.mp3")
+print(gigaam_transcriber.transcribe(input, model=TranscriberModel.GIGAAM_V3_CTC, emit_timestamps=True))
+print(gigaam_transcriber.transcribe(input, model=TranscriberModel.GIGAAM_V3_RNNT, emit_timestamps=True))
+print(gigaam_transcriber.transcribe(input, model=TranscriberModel.GIGAAM_V3_E2E_CTC, emit_timestamps=True))
+print(gigaam_transcriber.transcribe(input, model=TranscriberModel.GIGAAM_V3_E2E_RNNT, emit_timestamps=True))
 
 audio = read_audio("./data/test.mp3")
 

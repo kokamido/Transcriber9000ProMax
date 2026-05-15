@@ -1,8 +1,7 @@
 from dataclasses import asdict
-from typing import override
+from typing import final, override
 
 from gigaam import GigaAMASR, load_model
-from loguru import Logger
 
 from transcriber9000.dto import (
     AudioInput,
@@ -15,11 +14,12 @@ from transcriber9000.logging import setup_logging
 from .transcriber import ASRPipeline
 
 
+@final
 class Gigaam(ASRPipeline):
     def __init__(self):
         super().__init__()
         self._model_cache: dict[TranscriberModel, GigaAMASR] = {}
-        self._logger: Logger = setup_logging().bind(vendor="gigaam")
+        self._logger = setup_logging().bind(vendor="gigaam")
 
     def __load_asr_model(self, model: TranscriberModel) -> GigaAMASR:
         res = None
