@@ -39,8 +39,10 @@ class Gigaam(ASRPipeline):
         return res
 
     @override
-    def transcribe(self, input: AudioInput, model: TranscriberModel, emit_timestamps: bool) -> TranscribedText | None:
-        with self._logger.contextualize(model=model, **input.model_dump(mode="json")):
+    def transcribe_single_audio(
+        self, input: AudioInput, model: TranscriberModel, emit_timestamps: bool
+    ) -> TranscribedText | None:
+        with self._logger.contextualize(model=model, emit_timestamps=emit_timestamps, **input.model_dump(mode="json")):
             if input.sample_rate != 16000:
                 self._logger.warning(
                     f"Sample rate {input.sample_rate} does not supported by Gigaam. Audio will be resampled to 16kHz"
@@ -48,18 +50,30 @@ class Gigaam(ASRPipeline):
             if model not in self._model_cache:
                 self._model_cache[model] = self.__load_asr_model(model)
             transcriber = self._model_cache[model]
-            transcription_result = transcriber.transcribe(
-                wav_file=str(input.source_audio_path), word_timestamps=emit_timestamps
-            )
-            if transcription_result.words is not None:
-                self._logger.info("Transcribed")
-                self._logger.debug(f"transcription_result: {asdict(transcription_result)}")
-                result = TranscribedText(
+            if emit_timestamps:
+                transcription_result = transcriber.transcribe(wav_file=str(input.source_audio_path), word_timestamps=True)
+                if transcription_result.words is not None:
+                    self._logger.info("Transcribed")
+                    self._logger.debug(f"transcription_result: {asdict(transcription_result)}")
+                    result = TranscribedText(
+                        model=model,
+                        source_path=input.source_audio_path,
+                        phrases=[
+                            TranscribedPhrase(
+                                start_time=w.start,
+                                end_time=w.end,
+                                text=w.text,
+                            )
+                            for w in transcription_result.words
+                        ],
+                    )
+                    self._logger.debug(f"result: {result.model_dump_json()}")
+                    return result
+            else:
+                transcription_result = transcriber.transcribe(wav_file=str(input.source_audio_path), word_timestamps=False)
+                return TranscribedText(
+                    model=model,
                     source_path=input.source_audio_path,
-                    phrases=[
-                        TranscribedPhrase(start_time=w.start, end_time=w.end, text=w.text) for w in transcription_result.words
-                    ],
+                    phrases=[TranscribedPhrase(text=transcription_result.text, start_time=None, end_time=None)],
                 )
-                self._logger.debug(f"result: {result.model_dump_json()}")
-                return result
-            self._logger.error("transcription_result.words is None.")
+            self._logger.error("transcription result is None.")
